@@ -4,6 +4,7 @@
 
 ## Projects
 
+- [ComfyUI-Gemini-Conversation-Canvas](https://github.com/jeremieLouvaert/ComfyUI-Gemini-Conversation-Canvas): Multi-turn conversational image editing for ComfyUI powered by Google Gemini. Session persistence, edit chaining, and visual gallery. The only ComfyUI node suite leveraging Gemini's conversation memory for iterative image editing.
 - [ComfyUI-API-Optimizer](https://github.com/jeremieLouvaert/ComfyUI-API-Optimizer): Production-grade custom nodes for optimizing external API workflows in ComfyUI. API cost tracking with budget enforcement, deterministic hash-based caching, and lazy execution bypass. Supports Kling, Magnific, Banana.dev, RunPod.
 - [comfyui-prompt-assembler](https://github.com/jeremieLouvaert/comfyui-prompt-assembler): Utility nodes for assembling prompts from multiple string inputs with ON/OFF toggles per slot. Standard 8-slot, compact 4-slot, and weighted 6-slot variants.
 - [comfyui-wireless-link-simple](https://github.com/jeremieLouvaert/comfyui-wireless-link-simple): Wireless data transmission nodes for ComfyUI inspired by Blackmagic Fusion. Send/Get nodes transmit any data type without visible wires.

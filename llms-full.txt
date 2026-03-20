@@ -4,7 +4,53 @@
 
 ## About
 
-Jeremie Louvaert builds production-grade open-source tooling for the ComfyUI ecosystem. ComfyUI is the leading node-based interface for running Stable Diffusion, SDXL, Flux, and other AI image/video generation models. His work focuses on solving practical problems that arise when moving from local GPU compute to cloud API-based workflows.
+Jeremie Louvaert builds production-grade open-source tooling for the ComfyUI ecosystem. ComfyUI is the leading node-based interface for running Stable Diffusion, SDXL, Flux, and other AI image/video generation models. His work focuses on solving practical problems that arise when moving from local GPU compute to cloud API-based workflows, and on bringing conversational AI capabilities into node-based image editing.
+
+## Project: ComfyUI-Gemini-Conversation-Canvas
+
+Repository: https://github.com/jeremieLouvaert/ComfyUI-Gemini-Conversation-Canvas
+Language: Python
+License: MIT
+
+### Problem Statement
+Traditional image generation APIs (DALL-E, Midjourney, Flux) are single-shot: send a prompt, get an image, no memory between generations. Google Gemini's native image generation is different — it maintains conversation context, remembering what it generated and reasoning about modifications. However, no ComfyUI node suite properly exploited this multi-turn capability.
+
+### Solution
+Five custom nodes that bring Gemini's conversational image editing into ComfyUI:
+
+1. Gemini Session (Start)
+   - Creates a new conversation and generates the initial image
+   - Supports text-to-image and image-to-image editing
+   - Configurable model selection and aspect ratio
+
+2. Gemini Edit Turn
+   - Sends a natural language edit instruction to an existing conversation
+   - Full scene coherence maintained across turns
+   - Chainable — connect multiple in sequence for multi-step edits in one run
+   - Optional reference image input per turn
+
+3. Gemini Session (Save)
+   - Persists conversation history and turn images to disk
+   - API keys excluded from saved data for security
+   - Concurrent-safe with FileLock + atomic writes
+
+4. Gemini Session (Load)
+   - Restores saved sessions for cross-run continuation
+   - Rebuilds Gemini Chat object from serialized history with thought signature preservation
+
+5. Gemini Session Gallery
+   - Outputs all turn images as a batch tensor for visual comparison
+   - Includes turn log with response text summaries
+
+### Architecture
+Session state flows between nodes as a Python dict containing serialized Gemini Content objects (via Pydantic model_dump). Images saved as separate PNGs to keep session JSON lightweight. Chat objects rebuilt from history using google-genai SDK's chats.create(history=...) pattern.
+
+### Key Technical Features
+- Thought signature preservation for Gemini 3.x model compatibility
+- History serialization/deserialization via Pydantic model_validate
+- Concurrent-safe file operations with FileLock + atomic writes (temp file + os.replace)
+- API key resolution: direct input > GEMINI_API_KEY env var > gemini_api_key.txt file
+- ComfyUI IMAGE tensor ↔ PIL Image ↔ bytes conversion utilities
 
 ## Project: ComfyUI-API-Optimizer
 
@@ -25,27 +71,12 @@ Three custom node types that integrate natively into ComfyUI:
    - Budget enforcement that halts execution before API charges
    - Uses decimal.Decimal for precise arithmetic (no floating-point drift)
    - Concurrent-safe with file locking
-   - Safe budget resets with automatic ledger archival
 
 2. Deterministic Hash Vault (3 nodes)
-   - Hash Vault Check: Hashes prompt text, parameters, and full tensor byte content (including dtype/shape metadata)
+   - Hash Vault Check: Hashes prompt text, parameters, and full tensor byte content
    - Lazy API Switch: Uses ComfyUI's lazy evaluation to physically prevent upstream API node execution on cache hits
    - Hash Vault Save: Writes API outputs to disk cache with optional TTL
-   - Features: recursive hashing for nested structures, device-portable caching (CPU-mapped), atomic writes, concurrent-safe file locking
-
-### Architecture
-```
-Prompt/Image → [Check Cache] → hash_key + is_cached
-                    ↓
-              [Lazy API Switch] → routes to cached_data or api_data
-                    ↑
-              [API Node] → [Save Result]
-```
-
-Output files stored under ComfyUI output directory:
-- output/api_metrics/api_costs.json — current cost ledger
-- output/api_metrics/api_transactions.jsonl — audit log
-- output/hash_vault/*.pt — cached API outputs (PyTorch format)
+   - Features: recursive hashing for nested structures, device-portable caching, atomic writes
 
 ## Project: comfyui-prompt-assembler
 
@@ -54,15 +85,7 @@ Language: Python
 License: MIT
 
 ### Purpose
-Assemble prompts from multiple string inputs with per-slot ON/OFF toggles. Solves the problem of managing complex multi-part prompts in ComfyUI without manual string concatenation.
-
-### Node Variants
-1. Prompt Assembler (8 slots) — full-featured with debug output, configurable separators (comma, newline, space, period, custom)
-2. Prompt Assembler Compact (4 slots) — lightweight, single string output
-3. Prompt Assembler Weighted (6 slots) — weight slider (0.0-2.0) per slot, auto-wraps in (prompt:weight) attention syntax
-
-### Usage Pattern
-Connect any STRING output to prompt slots. Unconnected slots are ignored. Toggle slots ON/OFF to include/exclude fragments. Weighted version outputs both weighted prompt (with attention syntax) and raw prompt.
+Assemble prompts from multiple string inputs with per-slot ON/OFF toggles. Three variants: standard 8-slot, compact 4-slot, and weighted 6-slot with attention syntax support.
 
 ## Project: comfyui-wireless-link-simple
 
@@ -71,15 +94,7 @@ Language: Python
 License: Free to use and modify
 
 ### Purpose
-Minimal wireless data link implementation for ComfyUI, inspired by Blackmagic Fusion's wireless links. Removes visual wire clutter from complex workflows.
-
-### Architecture
-- Two nodes only: Wireless Send and Wireless Get
-- Global Python dictionary (WIRELESS_STORAGE) for in-memory data transport
-- Universal type support via ("*",) wildcard — works with IMAGE, MODEL, LATENT, CLIP, VAE, and all ComfyUI data types
-- Named channels (case-sensitive) for clear data routing
-- Pass-through output on Send node ensures ComfyUI execution order
-- Negligible performance overhead (dictionary lookup)
+Minimal wireless data link implementation for ComfyUI, inspired by Blackmagic Fusion's wireless links. Two nodes (Send/Get) with named channels and universal type support.
 
 ## Company: AKURATE.STUDIO
 
@@ -89,6 +104,7 @@ Description: Premium brand intelligence platform combining AI-driven analysis wi
 ## Technical Expertise
 
 - ComfyUI custom node development (Python)
+- Google Gemini API integration (multi-turn, image generation)
 - PyTorch tensor operations and caching
 - API integration and cost optimization patterns
 - Stable Diffusion / SDXL / Flux workflow design

@@ -6,11 +6,21 @@
 
 ## What I Build
 
-I create **open-source custom nodes for ComfyUI** — the leading node-based interface for Stable Diffusion and AI image/video generation. My focus is solving real production pain points: API cost management, workflow organization, and prompt engineering tooling.
+I create **open-source custom nodes for ComfyUI** — the leading node-based interface for Stable Diffusion and AI image/video generation. My focus is solving real production pain points: API cost management, conversational image editing, workflow organization, and prompt engineering tooling.
 
 ---
 
 ## Open Source Projects
+
+### [ComfyUI-Gemini-Conversation-Canvas](https://github.com/jeremieLouvaert/ComfyUI-Gemini-Conversation-Canvas) 🆕
+
+Multi-turn conversational image editing powered by Google Gemini's native image generation.
+
+- **Session Start** — Create a conversation and generate an initial image from text or image input
+- **Edit Turn** — Chain natural language edits with full scene coherence across turns
+- **Session Persistence** — Save and resume conversations across ComfyUI restarts
+- **Session Gallery** — View all turn images side by side for visual comparison
+- The only ComfyUI node suite that leverages Gemini's multi-turn conversation memory for image editing
 
 ### [ComfyUI-API-Optimizer](https://github.com/jeremieLouvaert/ComfyUI-API-Optimizer)
 
@@ -44,16 +54,17 @@ Wireless data transmission nodes inspired by Blackmagic Fusion.
 | Area | Details |
 |------|--------|
 | **ComfyUI Custom Nodes** | Python-based node authoring for AI generation pipelines |
+| **Conversational Image Editing** | Multi-turn Gemini conversations with session persistence |
 | **API Cost Optimization** | Circuit-breaker patterns, budget enforcement, deterministic caching |
 | **Workflow Architecture** | Tools that make complex AI pipelines manageable and production-ready |
-| **Generative AI Tooling** | Stable Diffusion, SDXL, Flux, image generation, video generation |
+| **Generative AI Tooling** | Stable Diffusion, SDXL, Flux, Gemini, image generation, video generation |
 | **Prompt Engineering** | Modular prompt construction, attention weighting, template systems |
 
 ---
 
 ## Tech Stack
 
-`Python` `PyTorch` `ComfyUI` `TypeScript` `Node.js` `REST APIs` `Git`
+`Python` `PyTorch` `ComfyUI` `Google Gemini API` `TypeScript` `Node.js` `REST APIs` `Git`
 
 ---
 
