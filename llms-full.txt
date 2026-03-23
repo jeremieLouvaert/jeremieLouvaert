@@ -4,7 +4,55 @@
 
 ## About
 
-Jeremie Louvaert builds production-grade open-source tooling for the ComfyUI ecosystem. ComfyUI is the leading node-based interface for running Stable Diffusion, SDXL, Flux, and other AI image/video generation models. His work focuses on solving practical problems that arise when moving from local GPU compute to cloud API-based workflows, and on bringing conversational AI capabilities into node-based image editing.
+Jeremie Louvaert builds production-grade open-source tooling for the ComfyUI ecosystem. ComfyUI is the leading node-based interface for running Stable Diffusion, SDXL, Flux, and other AI image/video generation models. His work focuses on solving practical problems that arise when moving from local GPU compute to cloud API-based workflows, on bringing conversational AI capabilities into node-based image editing, and on professional-grade color grading and film emulation for AI-generated imagery.
+
+## Project: ComfyUI-Darkroom
+
+Repository: https://github.com/jeremieLouvaert/ComfyUI-Darkroom
+Language: Python
+License: Open Source
+
+### Problem Statement
+The ComfyUI ecosystem has no professional-grade color grading or film emulation tools. Existing options are basic LUT loaders, simple grain overlays, or Instagram-filter-level color tools. Professional photographers and colorists have no way to apply real film stock characteristics, proper lens optical effects, or cinema-grade color processing within ComfyUI.
+
+### Solution
+A comprehensive suite of 11 nodes in two categories:
+
+**Wave 1: Film Emulation Engine (6 nodes)**
+1. Film Stock Color — 111 color film stocks across 7 categories (Negative, Slide, Cinema, FujiSim, Instant, Aged). Per-channel H&D characteristic curves with real Capture One data.
+2. Film Stock B&W — 50 black & white stocks with spectral sensitivity coefficients from darktable + Capture One channel mix data.
+3. Film Grain — Luminance-dependent grain simulation using OpenSimplex noise. Resolution-independent.
+4. Halation — Light bouncing off film base. Soft threshold highlight extraction with screen blending.
+5. Print Stock — Cinema print stock chain (Kodak 2383/2393, Fuji 3513/3510). Negative-to-print curve interaction.
+6. Cross Process — C-41 in E-6 and E-6 in C-41 simulation.
+
+**Wave 4: Lens & Optics (5 nodes)**
+7. Chromatic Aberration — Lateral CA with quadratic radial profile. 102 real lens profiles.
+8. Vignette — cos^4 physical falloff + mechanical vignetting. Anti-vignette correction mode.
+9. Lens Distortion — Brown-Conrady model (k1/k2 radial coefficients). Barrel, pincushion, mustache.
+10. Perspective Correct — Keystone + horizontal + rotation correction with auto-crop.
+11. Lens Profile — Combined distortion + CA + vignette from real lens data.
+
+### Key Technical Features
+- 161 film stocks with real Capture One curve data (parsed from 586 .costyle XML files)
+- 102 lens profiles across 10 brands: Canon, Nikon, Sony, Leica, Zeiss, Sigma, Fujifilm, Voigtlander, Vintage, Cinema
+- Physics-based: H&D characteristic curves, cos^4 vignette law, Brown-Conrady distortion model
+- Zero API costs — pure local computation
+- Dependencies: scipy, opensimplex only
+
+## Project: ComfyUI-Gemini-Direct
+
+Repository: https://github.com/jeremieLouvaert/ComfyUI-Gemini-Direct
+Language: Python
+License: Open Source
+
+### Problem Statement
+Google Gemini’s native image generation is powerful but access through ComfyUI was limited to credit-based wrappers. Users needed a direct API integration that uses their own API key without intermediary billing.
+
+### Solution
+Two custom nodes:
+1. Gemini Image Generate — Direct API call to Gemini image generation. Supports Gemini 2.0 Flash, 2.5 Flash, and 2.5 Pro models. Resolution and aspect ratio control. USD cost display per generation. Cache key output for Hash Vault compatibility.
+2. Prompt Studio (AI Enhancer) — Domain-adaptive prompt expansion, refinement, and editing using Gemini text models. Anti-AI realism mandate built into system prompts.
 
 ## Project: ComfyUI-Gemini-Conversation-Canvas
 
@@ -13,10 +61,10 @@ Language: Python
 License: MIT
 
 ### Problem Statement
-Traditional image generation APIs (DALL-E, Midjourney, Flux) are single-shot: send a prompt, get an image, no memory between generations. Google Gemini's native image generation is different — it maintains conversation context, remembering what it generated and reasoning about modifications. However, no ComfyUI node suite properly exploited this multi-turn capability.
+Traditional image generation APIs (DALL-E, Midjourney, Flux) are single-shot: send a prompt, get an image, no memory between generations. Google Gemini’s native image generation is different — it maintains conversation context, remembering what it generated and reasoning about modifications. However, no ComfyUI node suite properly exploited this multi-turn capability.
 
 ### Solution
-Five custom nodes that bring Gemini's conversational image editing into ComfyUI:
+Five custom nodes that bring Gemini’s conversational image editing into ComfyUI:
 
 1. Gemini Session (Start)
    - Creates a new conversation and generates the initial image
@@ -43,7 +91,7 @@ Five custom nodes that bring Gemini's conversational image editing into ComfyUI:
    - Includes turn log with response text summaries
 
 ### Architecture
-Session state flows between nodes as a Python dict containing serialized Gemini Content objects (via Pydantic model_dump). Images saved as separate PNGs to keep session JSON lightweight. Chat objects rebuilt from history using google-genai SDK's chats.create(history=...) pattern.
+Session state flows between nodes as a Python dict containing serialized Gemini Content objects (via Pydantic model_dump). Images saved as separate PNGs to keep session JSON lightweight. Chat objects rebuilt from history using google-genai SDK’s chats.create(history=...) pattern.
 
 ### Key Technical Features
 - Thought signature preservation for Gemini 3.x model compatibility
@@ -52,6 +100,23 @@ Session state flows between nodes as a Python dict containing serialized Gemini 
 - API key resolution: direct input > GEMINI_API_KEY env var > gemini_api_key.txt file
 - ComfyUI IMAGE tensor ↔ PIL Image ↔ bytes conversion utilities
 
+## Project: ComfyUI-Higgsfield-Direct
+
+Repository: https://github.com/jeremieLouvaert/ComfyUI-Higgsfield-Direct
+Language: Python
+License: Open Source
+
+### Problem Statement
+Higgsfield.ai offers multiple image and video generation models (Soul 2.0, Seedream 4, Reve, Kling 2.1, Seedance, DOP) but had no ComfyUI integration.
+
+### Solution
+Four custom nodes:
+1. Higgsfield Text-to-Image — Soul 2.0, Seedream 4, Reve models with resolution/aspect control and reference image support.
+2. Higgsfield Image Edit — Seedream 4 Edit for text-guided image editing.
+3. Higgsfield Image-to-Video — Kling 2.1 Pro, Seedance Pro, DOP Preview with 5/10/15s durations.
+4. Higgsfield Model Info — Utility node listing available models and their capabilities.
+Uses higgsfield-client SDK. API key via file/env/input.
+
 ## Project: ComfyUI-API-Optimizer
 
 Repository: https://github.com/jeremieLouvaert/ComfyUI-API-Optimizer
@@ -59,7 +124,7 @@ Language: Python
 License: Open Source
 
 ### Problem Statement
-When ComfyUI workflows shift from local GPU inference to cloud APIs (Kling 3.0, Magnific, Banana.dev, RunPod), the bottlenecks change from VRAM to API costs, latency, and serialization. ComfyUI's native caching often breaks with external API nodes due to dynamic timestamps and non-deterministic seeds.
+When ComfyUI workflows shift from local GPU inference to cloud APIs (Kling 3.0, Magnific, Banana.dev, RunPod), the bottlenecks change from VRAM to API costs, latency, and serialization. ComfyUI’s native caching often breaks with external API nodes due to dynamic timestamps and non-deterministic seeds.
 
 ### Solution
 Three custom node types that integrate natively into ComfyUI:
@@ -74,18 +139,25 @@ Three custom node types that integrate natively into ComfyUI:
 
 2. Deterministic Hash Vault (3 nodes)
    - Hash Vault Check: Hashes prompt text, parameters, and full tensor byte content
-   - Lazy API Switch: Uses ComfyUI's lazy evaluation to physically prevent upstream API node execution on cache hits
+   - Lazy API Switch: Uses ComfyUI’s lazy evaluation to physically prevent upstream API node execution on cache hits
    - Hash Vault Save: Writes API outputs to disk cache with optional TTL
    - Features: recursive hashing for nested structures, device-portable caching, atomic writes
 
-## Project: comfyui-prompt-assembler
+## Project: ComfyUI-Prompt-Vault
 
-Repository: https://github.com/jeremieLouvaert/comfyui-prompt-assembler
+Repository: https://github.com/jeremieLouvaert/ComfyUI-Prompt-Vault
 Language: Python
-License: MIT
+License: Open Source
 
-### Purpose
-Assemble prompts from multiple string inputs with per-slot ON/OFF toggles. Three variants: standard 8-slot, compact 4-slot, and weighted 6-slot with attention syntax support.
+### Problem Statement
+AI image generation prompts for photorealism require specific camera, lighting, film stock, and composition terminology that most users don’t know. Generic prompt libraries are full of anime, influencer, and low-quality templates.
+
+### Solution
+Three custom nodes:
+1. Prompt Vault Browse — 21 curated elite templates across 8 categories, filtered from 12,000+ raw prompts. Editable before output.
+2. Prompt Vault Build — Assemble prompts from 100+ components: 27 cameras, 24 lighting setups, 18 film stocks, 15 moods, 7 quality directives, 10 compositions.
+3. Prompt Vault Favorites — Persistent prompt library across sessions using JSON storage.
+Zero dependencies. Curated exclusively for photorealism.
 
 ## Project: comfyui-wireless-link-simple
 
@@ -94,7 +166,7 @@ Language: Python
 License: Free to use and modify
 
 ### Purpose
-Minimal wireless data link implementation for ComfyUI, inspired by Blackmagic Fusion's wireless links. Two nodes (Send/Get) with named channels and universal type support.
+Minimal wireless data link implementation for ComfyUI, inspired by Blackmagic Fusion’s wireless links. Two nodes (Send/Get) with named channels and universal type support.
 
 ## Company: AKURATE.STUDIO
 
@@ -104,6 +176,7 @@ Description: Premium brand intelligence platform combining AI-driven analysis wi
 ## Technical Expertise
 
 - ComfyUI custom node development (Python)
+- Professional color grading and film emulation (physics-based)
 - Google Gemini API integration (multi-turn, image generation)
 - PyTorch tensor operations and caching
 - API integration and cost optimization patterns
