@@ -1,13 +1,16 @@
 # Jeremie Louvaert
 
-> Open-source developer and founder of AKURATE.STUDIO. Builds production-grade custom nodes for ComfyUI — the leading node-based UI for Stable Diffusion and AI image/video generation workflows.
+> Open-source developer and founder of AKURATE.STUDIO. Builds production-grade custom nodes for ComfyUI — the leading node-based UI for AI image/video generation workflows.
 
 ## Projects
 
-- [ComfyUI-Gemini-Conversation-Canvas](https://github.com/jeremieLouvaert/ComfyUI-Gemini-Conversation-Canvas): Multi-turn conversational image editing for ComfyUI powered by Google Gemini. Session persistence, edit chaining, and visual gallery. The only ComfyUI node suite leveraging Gemini's conversation memory for iterative image editing.
-- [ComfyUI-API-Optimizer](https://github.com/jeremieLouvaert/ComfyUI-API-Optimizer): Production-grade custom nodes for optimizing external API workflows in ComfyUI. API cost tracking with budget enforcement, deterministic hash-based caching, and lazy execution bypass. Supports Kling, Magnific, Banana.dev, RunPod.
-- [comfyui-prompt-assembler](https://github.com/jeremieLouvaert/comfyui-prompt-assembler): Utility nodes for assembling prompts from multiple string inputs with ON/OFF toggles per slot. Standard 8-slot, compact 4-slot, and weighted 6-slot variants.
-- [comfyui-wireless-link-simple](https://github.com/jeremieLouvaert/comfyui-wireless-link-simple): Wireless data transmission nodes for ComfyUI inspired by Blackmagic Fusion. Send/Get nodes transmit any data type without visible wires.
+- [ComfyUI-Darkroom](https://github.com/jeremieLouvaert/ComfyUI-Darkroom): Professional color grading & film emulation suite for ComfyUI. 11 nodes: Film Stock Color/B&W (161 stocks from real Capture One curve data), Film Grain, Halation, Print Stock, Cross Process, Chromatic Aberration, Vignette, Lens Distortion, Perspective Correct, Lens Profile (102 real lenses across 10 brands). Physics-based H&D curves, cos^4 vignette, Brown-Conrady distortion.
+- [ComfyUI-Gemini-Direct](https://github.com/jeremieLouvaert/ComfyUI-Gemini-Direct): Direct Google Gemini image generation for ComfyUI. Bypass credits, use your own API key. Drop-in replacement for Nano Banana Pro. Includes Prompt Studio for AI-powered prompt enhancement.
+- [ComfyUI-Gemini-Conversation-Canvas](https://github.com/jeremieLouvaert/ComfyUI-Gemini-Conversation-Canvas): Multi-turn conversational image editing powered by Google Gemini. Session persistence, edit chaining, visual gallery. The only ComfyUI node suite leveraging Gemini's conversation memory for iterative image editing.
+- [ComfyUI-Higgsfield-Direct](https://github.com/jeremieLouvaert/ComfyUI-Higgsfield-Direct): Direct Higgsfield API integration — multi-model image & video generation (Soul 2.0, Seedream 4, Reve, Kling 2.1, Seedance, DOP). Text-to-Image, Image Edit, Image-to-Video, Model Info nodes.
+- [ComfyUI-API-Optimizer](https://github.com/jeremieLouvaert/ComfyUI-API-Optimizer): Production-grade API optimization — cost tracking with budget enforcement, deterministic hash caching, lazy execution bypass. Supports any cloud API provider.
+- [ComfyUI-Prompt-Vault](https://github.com/jeremieLouvaert/ComfyUI-Prompt-Vault): Photographic prompt arsenal — 21 curated templates + component builder with 100+ components (27 cameras, 24 lighting setups, 18 film stocks, 15 moods). Persistent favorites system.
+- [comfyui-wireless-link-simple](https://github.com/jeremieLouvaert/comfyui-wireless-link-simple): Wireless data transmission nodes inspired by Blackmagic Fusion. Send/Get any data type without visible wires.
 
 ## Links
 
