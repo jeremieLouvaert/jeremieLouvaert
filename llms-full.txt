@@ -16,7 +16,7 @@ License: Open Source
 The ComfyUI ecosystem has no professional-grade color grading or film emulation tools. Existing options are basic LUT loaders, simple grain overlays, or Instagram-filter-level color tools. Professional photographers and colorists have no way to apply real film stock characteristics, proper lens optical effects, or cinema-grade color processing within ComfyUI.
 
 ### Solution
-A comprehensive suite of 11 nodes in two categories:
+A comprehensive suite of 29 nodes across four modules:
 
 **Wave 1: Film Emulation Engine (6 nodes)**
 1. Film Stock Color — 111 color film stocks across 7 categories (Negative, Slide, Cinema, FujiSim, Instant, Aged). Per-channel H&D characteristic curves with real Capture One data.
@@ -26,17 +26,41 @@ A comprehensive suite of 11 nodes in two categories:
 5. Print Stock — Cinema print stock chain (Kodak 2383/2393, Fuji 3513/3510). Negative-to-print curve interaction.
 6. Cross Process — C-41 in E-6 and E-6 in C-41 simulation.
 
+**Wave 2: Camera Raw Tools (9 nodes)**
+7. White Balance — Color temperature (Kelvin) and tint via Planckian locus approximation.
+8. Exposure & Tone — EV-stop exposure, S-curve contrast, parametric shadows/highlights/whites/blacks.
+9. HSL Selective — Per-hue adjustments across 8 color bands with smooth feathering.
+10. Clarity / Texture / Dehaze — Local contrast enhancement, surface texture, haze removal.
+11. Vibrance — Intelligent saturation with skin tone protection.
+12. Sharpening Pro — Advanced unsharp mask with edge-aware masking.
+13. Noise Reduction — Multi-pass guided filter with 7 presets.
+14. Skin Tone Uniformity — Mask-weighted mean pull for even skin tones. 6 skin type presets.
+15. Color Qualifier — Color range analysis with 19 action presets.
+
+**Wave 3: Color Grading (9 nodes)**
+16. Tone Curve — 5-point cubic spline per channel (PchipInterpolator). 11 presets.
+17. Lift Gamma Gain — DaVinci Resolve primary corrector. 16 R/G/B/Master sliders.
+18. Log Wheels — Log2-space soft zone masks with hue/density per zone. 7 presets.
+19. 3-Way Color Balance — Preset-first creative tinting. 15 looks (Orange & Teal, Moonlight, etc.).
+20. Hue vs Hue — Per-band hue remapping. 9 presets.
+21. Hue vs Sat — Per-hue saturation control. 8 presets.
+22. Lum vs Sat — Per-luminance saturation. 7 presets.
+23. Sat vs Sat — Saturation-based saturation adjustment. 6 presets.
+24. Color Warper — 2D hue+saturation region warping. 9 multi-region presets.
+
 **Wave 4: Lens & Optics (5 nodes)**
-7. Chromatic Aberration — Lateral CA with quadratic radial profile. 102 real lens profiles.
-8. Vignette — cos^4 physical falloff + mechanical vignetting. Anti-vignette correction mode.
-9. Lens Distortion — Brown-Conrady model (k1/k2 radial coefficients). Barrel, pincushion, mustache.
-10. Perspective Correct — Keystone + horizontal + rotation correction with auto-crop.
-11. Lens Profile — Combined distortion + CA + vignette from real lens data.
+25. Chromatic Aberration — Lateral CA with quadratic radial profile. 102 real lens profiles.
+26. Vignette — cos^4 physical falloff + mechanical vignetting. Anti-vignette correction mode.
+27. Lens Distortion — Brown-Conrady model (k1/k2 radial coefficients). Barrel, pincushion, mustache.
+28. Perspective Correct — Keystone + horizontal + rotation correction with auto-crop.
+29. Lens Profile — Combined distortion + CA + vignette from real lens data.
 
 ### Key Technical Features
 - 161 film stocks with real Capture One curve data (parsed from 586 .costyle XML files)
 - 102 lens profiles across 10 brands: Canon, Nikon, Sony, Leica, Zeiss, Sigma, Fujifilm, Voigtlander, Vintage, Cinema
-- Physics-based: H&D characteristic curves, cos^4 vignette law, Brown-Conrady distortion model
+- 75+ grading presets across Tone Curve, Log Wheels, 3-Way Color Balance, Hue/Sat/Lum curves, Color Warper
+- Physics-based: H&D characteristic curves, cos^4 vignette law, Brown-Conrady distortion model, PchipInterpolator tone curves
+- All processing in linear light (sRGB gamma removed before math, reapplied after)
 - Zero API costs — pure local computation
 - Dependencies: scipy, opensimplex only
 
