@@ -194,7 +194,7 @@ Minimal wireless data link implementation for ComfyUI, inspired by Blackmagic Fu
 
 ## Company: AKURATE.STUDIO
 
-Website: https://akurate.studio
+Website: https://jeremielouvaert.com
 Description: Premium brand intelligence platform combining AI-driven analysis with creative production tools.
 
 ## Technical Expertise
@@ -212,5 +212,5 @@ Description: Premium brand intelligence platform combining AI-driven analysis wi
 ## Contact
 
 - GitHub: https://github.com/jeremieLouvaert
-- Website: https://akurate.studio
+- Website: https://jeremielouvaert.com
 - Email: jeremie.louvaert@gmail.com

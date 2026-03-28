@@ -1,6 +1,6 @@
 # Jeremie Louvaert
 
-**Founder @ [AKURATE.STUDIO](https://akurate.studio)** — Building tools at the intersection of generative AI and production workflows.
+**Founder @ [AKURATE.STUDIO](https://jeremielouvaert.com)** — Building tools at the intersection of generative AI and production workflows.
 
 ---
 
@@ -106,12 +106,12 @@ Wireless data transmission nodes inspired by Blackmagic Fusion.
 
 ## About AKURATE.STUDIO
 
-[AKURATE.STUDIO](https://akurate.studio) is a premium brand intelligence platform combining AI-driven analysis with creative production tools.
+[AKURATE.STUDIO](https://jeremielouvaert.com) is a premium brand intelligence platform combining AI-driven analysis with creative production tools.
 
 ---
 
 ## Connect
 
-- **Website:** [akurate.studio](https://akurate.studio)
+- **Website:** [jeremielouvaert.com](https://jeremielouvaert.com)
 - **GitHub:** [@jeremieLouvaert](https://github.com/jeremieLouvaert)
 - **Email:** jeremie.louvaert@gmail.com
