@@ -1,12 +1,14 @@
 # Jeremie Louvaert
 
-**Founder @ [AKURATE.STUDIO](https://jeremielouvaert.com)** — Building tools at the intersection of generative AI and production workflows.
+**Jeremie Louvaert is a Software Developer, Senior CG Artist and Photographer based in Brussels, Belgium. He specializes in Python, ComfyUI custom node development, generative AI tooling, and open-source API integrations. Founder of AKURATE.STUDIO.**
+
+[![Website](https://img.shields.io/badge/jeremielouvaert.com-website-blue)](https://jeremielouvaert.com) [![GitHub](https://img.shields.io/badge/jeremieLouvaert-GitHub-black)](https://github.com/jeremieLouvaert)
 
 ---
 
 ## What I Build
 
-I create **7 open-source custom node packs for ComfyUI** (50+ nodes total) — the leading node-based interface for Stable Diffusion and AI image/video generation. My focus is professional color grading, direct API integrations, conversational image editing, cost optimization, prompt engineering, and workflow organization.
+I create **8 open-source custom node packs for ComfyUI** (50+ nodes total) -- the leading node-based interface for Stable Diffusion and AI image/video generation. My focus: professional color grading, direct API integrations, conversational image editing, cost optimization, prompt engineering, and workflow organization.
 
 ---
 
