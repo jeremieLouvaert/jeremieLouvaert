@@ -16,7 +16,7 @@ License: Open Source
 The ComfyUI ecosystem has no professional-grade color grading or film emulation tools. Existing options are basic LUT loaders, simple grain overlays, or Instagram-filter-level color tools. Professional photographers and colorists have no way to apply real film stock characteristics, proper lens optical effects, or cinema-grade color processing within ComfyUI.
 
 ### Solution
-A comprehensive suite of 29 nodes across four modules:
+A comprehensive suite of 34 nodes across five modules:
 
 **Wave 1: Film Emulation Engine (6 nodes)**
 1. Film Stock Color — 111 color film stocks across 7 categories (Negative, Slide, Cinema, FujiSim, Instant, Aged). Per-channel H&D characteristic curves with real Capture One data.
@@ -54,6 +54,13 @@ A comprehensive suite of 29 nodes across four modules:
 27. Lens Distortion — Brown-Conrady model (k1/k2 radial coefficients). Barrel, pincushion, mustache.
 28. Perspective Correct — Keystone + horizontal + rotation correction with auto-crop.
 29. Lens Profile — Combined distortion + CA + vignette from real lens data.
+
+**Wave 5: Pipeline — LUT & Color Management (5 nodes)**
+30. LUT Identity Generator — Outputs neutral identity lattice image for LUT baking (17/33/65 point).
+31. LUT Export (.cube) — Bakes any Darkroom processing chain into universal .cube 3D LUT files for DaVinci Resolve, Premiere, Photoshop, Capture One.
+32. LUT Apply (.cube) — Loads and applies any .cube 3D LUT with trilinear interpolation. Import looks from external tools.
+33. Color Space Transform — Convert between sRGB, Linear sRGB, ACEScg, ACEScct, Rec.2020, DCI-P3. The only ACES-aware color management in ComfyUI.
+34. ACES Tonemap — Industry-standard tonemapping: ACES Filmic, ACES Fitted (Hill), AgX (Blender), Reinhard, Filmic (Uncharted 2). Exposure bias and ACES gamut conversion.
 
 ### Key Technical Features
 - 161 film stocks with real Capture One curve data (parsed from 586 .costyle XML files)

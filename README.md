@@ -8,7 +8,7 @@
 
 ## What I Build
 
-I create **8 open-source custom node packs for ComfyUI** (50+ nodes total) -- the leading node-based interface for Stable Diffusion and AI image/video generation. My focus: professional color grading, direct API integrations, conversational image editing, cost optimization, prompt engineering, and workflow organization.
+I create **8 open-source custom node packs for ComfyUI** (55+ nodes total) -- the leading node-based interface for Stable Diffusion and AI image/video generation. My focus: professional color grading, direct API integrations, conversational image editing, cost optimization, prompt engineering, and workflow organization.
 
 ---
 
@@ -16,7 +16,7 @@ I create **8 open-source custom node packs for ComfyUI** (50+ nodes total) -- th
 
 ### [ComfyUI-Darkroom](https://github.com/jeremieLouvaert/ComfyUI-Darkroom)
 
-Professional color grading & film emulation suite for ComfyUI. 29 nodes across four modules:
+Professional color grading & film emulation suite for ComfyUI. 34 nodes across five modules:
 
 **Film Emulation (6 nodes)** — 161 film stocks (111 color + 50 B&W) with real Capture One curve data parsed from 586 .costyle XML files. Film Grain, Halation, Print Stock, Cross Process.
 
@@ -25,6 +25,8 @@ Professional color grading & film emulation suite for ComfyUI. 29 nodes across f
 **Color Grading (9 nodes)** — Tone Curve (cubic spline), Lift Gamma Gain (Resolve primary corrector), Log Wheels (log2-space zone grading), 3-Way Color Balance (15 creative presets), Hue vs Hue, Hue vs Sat, Lum vs Sat, Sat vs Sat, Color Warper.
 
 **Lens & Optics (5 nodes)** — Chromatic Aberration, Vignette, Lens Distortion, Perspective Correct, Lens Profile with 102 real lens models across 10 brands.
+
+**Pipeline (5 nodes)** — LUT Identity Generator, LUT Export (.cube), LUT Apply (.cube), Color Space Transform (sRGB/ACEScg/ACEScct/Rec.2020/DCI-P3), ACES Tonemap. Export any Darkroom grade to DaVinci Resolve, Premiere, Photoshop. The only ACES-aware toolset in ComfyUI.
 
 - Physics-based: H&D characteristic curves, cos^4 vignette law, Brown-Conrady distortion, PchipInterpolator tone curves
 - 75+ grading presets across all nodes
@@ -90,7 +92,7 @@ Wireless data transmission nodes inspired by Blackmagic Fusion.
 
 | Area | Details |
 |------|--------|
-| **Professional Color Grading** | 29-node suite: physics-based film emulation, Resolve-level grading, Camera Raw tools, lens optics. 161 stocks, 102 lenses, 75+ presets |
+| **Professional Color Grading** | 34-node suite: physics-based film emulation, Resolve-level grading, Camera Raw tools, lens optics, LUT export, ACES color management. 161 stocks, 102 lenses, 75+ presets |
 | **ComfyUI Custom Nodes** | Python-based node authoring for AI generation pipelines |
 | **Conversational Image Editing** | Multi-turn Gemini conversations with session persistence |
 | **API Cost Optimization** | Circuit-breaker patterns, budget enforcement, deterministic caching |
