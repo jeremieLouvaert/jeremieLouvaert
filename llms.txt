@@ -1,19 +1,36 @@
 # Jeremie Louvaert
 
-> Open-source developer and founder of AKURATE.STUDIO. Builds production-grade custom nodes for ComfyUI — the leading node-based UI for AI image/video generation workflows.
+> Software developer, senior CG artist and photographer in Sint-Denijs, Belgium. Founder of AKURATE.STUDIO, the umbrella name for his creative tools. Builds 14 open-source custom node packs for ComfyUI (108 nodes in 12 packs, plus 2 frontend extensions), all published on the Comfy Registry.
 
-## Projects
+## Image finishing
 
-- [ComfyUI-Darkroom](https://github.com/jeremieLouvaert/ComfyUI-Darkroom): Professional color grading & film emulation suite for ComfyUI. 34 nodes across 5 modules: Film Emulation (6 nodes, 161 stocks from real Capture One curve data), Camera Raw (9 nodes), Color Grading (9 nodes — Tone Curve, Lift Gamma Gain, Log Wheels, 3-Way Color Balance, Hue/Lum/Sat curves, Color Warper), Lens & Optics (5 nodes, 102 real lens profiles), Pipeline (5 nodes — LUT export/apply .cube, Color Space Transform with ACES/Rec.2020/P3, ACES Tonemap). 75+ presets. Physics-based, zero API costs.
-- [ComfyUI-Gemini-Direct](https://github.com/jeremieLouvaert/ComfyUI-Gemini-Direct): Direct Google Gemini image generation for ComfyUI. Bypass credits, use your own API key. Drop-in replacement for Nano Banana Pro. Includes Prompt Studio for AI-powered prompt enhancement.
-- [ComfyUI-Gemini-Conversation-Canvas](https://github.com/jeremieLouvaert/ComfyUI-Gemini-Conversation-Canvas): Multi-turn conversational image editing powered by Google Gemini. Session persistence, edit chaining, visual gallery. The only ComfyUI node suite leveraging Gemini's conversation memory for iterative image editing.
-- [ComfyUI-Higgsfield-Direct](https://github.com/jeremieLouvaert/ComfyUI-Higgsfield-Direct): Direct Higgsfield API integration — multi-model image & video generation (Soul 2.0, Seedream 4, Reve, Kling 2.1, Seedance, DOP). Text-to-Image, Image Edit, Image-to-Video, Model Info nodes.
-- [ComfyUI-API-Optimizer](https://github.com/jeremieLouvaert/ComfyUI-API-Optimizer): Production-grade API optimization — cost tracking with budget enforcement, deterministic hash caching, lazy execution bypass. Supports any cloud API provider.
-- [ComfyUI-Prompt-Vault](https://github.com/jeremieLouvaert/ComfyUI-Prompt-Vault): Photographic prompt arsenal — 21 curated templates + component builder with 100+ components (27 cameras, 24 lighting setups, 18 film stocks, 15 moods). Persistent favorites system.
-- [comfyui-wireless-link-simple](https://github.com/jeremieLouvaert/comfyui-wireless-link-simple): Wireless data transmission nodes inspired by Blackmagic Fusion. Send/Get any data type without visible wires.
+- [ComfyUI-Darkroom](https://github.com/jeremieLouvaert/ComfyUI-Darkroom): Colour grading and film emulation suite, 59 nodes. 161 film stocks (111 colour, 50 B&W), 35 spectral negative-by-print LUTs, 102 lens profiles. Film Grain Pro (Newson et al. 2017), annular halation, RAW load with Adobe .dcp profiles, scopes, reference colour match, CMYK TIFF export with ICC, halftone, .cube LUT export, ACES and AgX tonemapping. Local, no API cost; 24 nodes run on the GPU.
+
+## Procedural fields and data art
+
+- [ComfyUI-Field](https://github.com/jeremieLouvaert/ComfyUI-Field): 15 nodes for resolution-independent procedural masks: Perlin, simplex, value and Worley noise, gradients, shapes, tiles, scatter, remap, morphology, warp, and masks derived from an image's edges or detail. Exact coverage control via a probability integral transform.
+- [ComfyUI-Schematic](https://github.com/jeremieLouvaert/ComfyUI-Schematic): 4 data-art nodes: annotation overlays, projective-geometry construction plates, density-driven Voronoi tessellations, procedural topographic map sheets.
+
+## Generation on your own API key
+
+- [ComfyUI-Gemini-Direct](https://github.com/jeremieLouvaert/ComfyUI-Gemini-Direct): Direct Google Gemini API. Image generation (Gemini 3 Pro Image / Nano Banana Pro, Nano Banana 2.1, Gemini 3.1 Flash Image, 2.5 Flash Image), Gemini Video Omni (720p clips with audio), photographer style transfer (23 styles), Prompt Studio. USD cost per run.
+- [ComfyUI-Gemini-Conversation-Canvas](https://github.com/jeremieLouvaert/ComfyUI-Gemini-Conversation-Canvas): Multi-turn image editing as a saved Gemini conversation. Session save/load and a gallery of every turn.
+- [ComfyUI-GPT-Image-Direct](https://github.com/jeremieLouvaert/ComfyUI-GPT-Image-Direct): OpenAI GPT Image 2.6 Flare and Sunburst (plus 2.5, 2, 1.5, 1-mini) on your own key. Up to 16 reference images, inpaint mask, animated GIF and SVG output, markup-guided edits, exact USD cost from token usage.
+- [ComfyUI-Higgsfield-Direct](https://github.com/jeremieLouvaert/ComfyUI-Higgsfield-Direct): Higgsfield text-to-image (Soul 2.0, Seedream 4, Reve), image edit, image-to-video (Kling 2.1 Pro, Seedance Pro, DOP) with native VIDEO output.
+- [ComfyUI-Midjourney-Direct](https://github.com/jeremieLouvaert/ComfyUI-Midjourney-Direct): Midjourney generation through the LegNext.ai proxy, no Discord. v7, v6.1, v6, niji 6.
+
+## Workflow tools
+
+- [ComfyUI-API-Optimizer](https://github.com/jeremieLouvaert/ComfyUI-API-Optimizer): API budget tracker that halts a run before it overspends, deterministic hash cache for API outputs, lazy switch that skips the API node on a cache hit, and a cache browser.
+- [ComfyUI-Prompt-Vault](https://github.com/jeremieLouvaert/ComfyUI-Prompt-Vault): Photographic prompt templates (21) and a builder with 101 components: cameras, lighting, film stocks, moods. Persistent favourites.
+- [comfyui-prompt-assembler](https://github.com/jeremieLouvaert/comfyui-prompt-assembler): Join prompt fragments with per-slot toggles; weighted version emits (text:weight) attention syntax.
+- [comfyui-wireless-link-simple](https://github.com/jeremieLouvaert/comfyui-wireless-link-simple): Send and get any data type on named channels without wires, after Blackmagic Fusion.
+- [ComfyUI-ReferenceCopy](https://github.com/jeremieLouvaert/ComfyUI-ReferenceCopy): Frontend extension. Houdini-style reference copies: clones keep every parameter live-linked to the original until you edit that parameter.
+- [ComfyUI-EphemeralPeek](https://github.com/jeremieLouvaert/ComfyUI-EphemeralPeek): Frontend extension. Alt+click an output socket for a floating preview without adding a preview node.
 
 ## Links
 
 - Website: https://jeremielouvaert.com
 - GitHub: https://github.com/jeremieLouvaert
 - Email: jeremie.louvaert@gmail.com
+- Full context: https://github.com/jeremieLouvaert/jeremieLouvaert/blob/main/llms-full.txt

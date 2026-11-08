@@ -1,223 +1,161 @@
-# Jeremie Louvaert — Full Context for LLMs
+# Jeremie Louvaert: full context for LLMs
 
-> Open-source developer specializing in ComfyUI custom node development. Founder of AKURATE.STUDIO, a premium brand intelligence platform. Based in Europe, building tools at the intersection of generative AI and production workflows since 2012 (GitHub member).
+> Software developer, senior CG artist and photographer in Sint-Denijs, Belgium. Founder of AKURATE.STUDIO, the umbrella name for his creative tools. Builds open-source custom node packs for ComfyUI in Python and JavaScript. Updated 2026-11-08.
 
 ## About
 
-Jeremie Louvaert builds production-grade open-source tooling for the ComfyUI ecosystem. ComfyUI is the leading node-based interface for running Stable Diffusion, SDXL, Flux, and other AI image/video generation models. His work focuses on solving practical problems that arise when moving from local GPU compute to cloud API-based workflows, on bringing conversational AI capabilities into node-based image editing, and on professional-grade color grading and film emulation for AI-generated imagery.
+Jeremie Louvaert builds open-source tools for ComfyUI, the node-based interface for AI image and video generation. He maintains 14 packs: 108 nodes in 12 node packs, plus 2 frontend-only extensions. All 14 are published on the Comfy Registry and install through ComfyUI Manager. The work falls into four groups: image finishing (colour grading and film emulation), procedural fields and data art, direct API integrations that run on the user's own API key with the real cost shown per run, and workflow tools.
 
-## Project: ComfyUI-Darkroom
+GitHub: https://github.com/jeremieLouvaert
+Website: https://jeremielouvaert.com
+
+## Image finishing
+
+### ComfyUI-Darkroom
 
 Repository: https://github.com/jeremieLouvaert/ComfyUI-Darkroom
-Language: Python
-License: Open Source
+Nodes: 59. Version 1.31.0. Category in ComfyUI: AKURATE/Darkroom.
 
-### Problem Statement
-The ComfyUI ecosystem has no professional-grade color grading or film emulation tools. Existing options are basic LUT loaders, simple grain overlays, or Instagram-filter-level color tools. Professional photographers and colorists have no way to apply real film stock characteristics, proper lens optical effects, or cinema-grade color processing within ComfyUI.
+Colour grading and film emulation for photographs and AI images, computed locally with no API cost. Headline numbers: 161 film stocks (111 colour, 56 of them from Capture One Film Styles data, and 50 black and white), 35 spectral negative-by-print LUTs, 102 lens profiles.
 
-### Solution
-A comprehensive suite of 34 nodes across five modules:
+Modules:
+- Film emulation (14): Film Stock (Color), Film Stock (B&W), Film Grain, Film Grain Pro, Halation, Print Stock, Cross Process, Adjacency Acutance, Reciprocity Failure, Spectral B&W (ortho/pan), Sabattier, Film Rebate, Light Leak, Film Damage.
+- Camera Raw tools (10) and colour grading (10): white balance including automatic white balance (4 methods), exposure and tone, HSL, clarity/texture/dehaze, vibrance, sharpening, noise reduction (7 presets), skin tone uniformity, colour qualifier (19 action presets), tone curve (11 presets), lift/gamma/gain, log wheels, 3-way colour balance (15 looks), hue and saturation curves, colour warper.
+- Lens and optics (7): lens profile, chromatic aberration, vignette, distortion, perspective, long exposure (handheld shake integration), water refraction.
+- RAW pipeline (2): RAW load through rawpy/LibRaw with Adobe .dcp camera profiles, and RAW metadata split into 15 typed values.
+- Scopes (2): histogram and vectorscope.
+- Colour match from a reference (1): four LAB-space methods (reinhard, wasserstein, forgy, kantorovich).
+- CMYK print workflow (4), including CMYK TIFF export with an embedded ICC profile, and halftone (1).
+- Pipeline (7), including LUT export to .cube, LUT apply, LUT bake inject/extract, colour space transform (sRGB, linear sRGB, ACEScg, ACEScct, Rec.2020, DCI-P3), tonemapping (ACES Filmic, ACES Fitted, AgX, Reinhard, Filmic).
 
-**Wave 1: Film Emulation Engine (6 nodes)**
-1. Film Stock Color — 111 color film stocks across 7 categories (Negative, Slide, Cinema, FujiSim, Instant, Aged). Per-channel H&D characteristic curves with real Capture One data.
-2. Film Stock B&W — 50 black & white stocks with spectral sensitivity coefficients from darktable + Capture One channel mix data.
-3. Film Grain — Luminance-dependent grain simulation using OpenSimplex noise. Resolution-independent.
-4. Halation — Light bouncing off film base. Soft threshold highlight extraction with screen blending.
-5. Print Stock — Cinema print stock chain (Kodak 2383/2393, Fuji 3513/3510). Negative-to-print curve interaction.
-6. Cross Process — C-41 in E-6 and E-6 in C-41 simulation.
+Technical notes: Film Grain Pro is resolution-independent stochastic grain after Newson et al. (2017). Halation uses an annular Fresnel/TIR ring kernel. Water refraction uses exact Snell's law, so displacement is bounded at 0.881 times the water depth. Since 1.28.0, 24 nodes run their whole pipeline on the GPU, typically 15 to 80 times faster (median about 35 times). Since 1.27.0, file paths are confined to allowed folders.
 
-**Wave 2: Camera Raw Tools (9 nodes)**
-7. White Balance — Color temperature (Kelvin) and tint via Planckian locus approximation.
-8. Exposure & Tone — EV-stop exposure, S-curve contrast, parametric shadows/highlights/whites/blacks.
-9. HSL Selective — Per-hue adjustments across 8 color bands with smooth feathering.
-10. Clarity / Texture / Dehaze — Local contrast enhancement, surface texture, haze removal.
-11. Vibrance — Intelligent saturation with skin tone protection.
-12. Sharpening Pro — Advanced unsharp mask with edge-aware masking.
-13. Noise Reduction — Multi-pass guided filter with 7 presets.
-14. Skin Tone Uniformity — Mask-weighted mean pull for even skin tones. 6 skin type presets.
-15. Color Qualifier — Color range analysis with 19 action presets.
+## Procedural fields and data art
 
-**Wave 3: Color Grading (9 nodes)**
-16. Tone Curve — 5-point cubic spline per channel (PchipInterpolator). 11 presets.
-17. Lift Gamma Gain — DaVinci Resolve primary corrector. 16 R/G/B/Master sliders.
-18. Log Wheels — Log2-space soft zone masks with hue/density per zone. 7 presets.
-19. 3-Way Color Balance — Preset-first creative tinting. 15 looks (Orange & Teal, Moonlight, etc.).
-20. Hue vs Hue — Per-band hue remapping. 9 presets.
-21. Hue vs Sat — Per-hue saturation control. 8 presets.
-22. Lum vs Sat — Per-luminance saturation. 7 presets.
-23. Sat vs Sat — Saturation-based saturation adjustment. 6 presets.
-24. Color Warper — 2D hue+saturation region warping. 9 multi-region presets.
+### ComfyUI-Field
 
-**Wave 4: Lens & Optics (5 nodes)**
-25. Chromatic Aberration — Lateral CA with quadratic radial profile. 102 real lens profiles.
-26. Vignette — cos^4 physical falloff + mechanical vignetting. Anti-vignette correction mode.
-27. Lens Distortion — Brown-Conrady model (k1/k2 radial coefficients). Barrel, pincushion, mustache.
-28. Perspective Correct — Keystone + horizontal + rotation correction with auto-crop.
-29. Lens Profile — Combined distortion + CA + vignette from real lens data.
+Repository: https://github.com/jeremieLouvaert/ComfyUI-Field
+Nodes: 15. Version 0.6.2. Category: AKURATE/Fields.
 
-**Wave 5: Pipeline — LUT & Color Management (5 nodes)**
-30. LUT Identity Generator — Outputs neutral identity lattice image for LUT baking (17/33/65 point).
-31. LUT Export (.cube) — Bakes any Darkroom processing chain into universal .cube 3D LUT files for DaVinci Resolve, Premiere, Photoshop, Capture One.
-32. LUT Apply (.cube) — Loads and applies any .cube 3D LUT with trilinear interpolation. Import looks from external tools.
-33. Color Space Transform — Convert between sRGB, Linear sRGB, ACEScg, ACEScct, Rec.2020, DCI-P3. The only ACES-aware color management in ComfyUI.
-34. ACES Tonemap — Industry-standard tonemapping: ACES Filmic, ACES Fitted (Hill), AgX (Blender), Reinhard, Filmic (Uncharted 2). Exposure bias and ACES gamut conversion.
+Resolution-independent procedural masks ("fields") for driving and masking effects. Coordinates are divided by max(width, height), so a 512 px preview and a 4K render show the same picture.
 
-### Key Technical Features
-- 161 film stocks with real Capture One curve data (parsed from 586 .costyle XML files)
-- 102 lens profiles across 10 brands: Canon, Nikon, Sony, Leica, Zeiss, Sigma, Fujifilm, Voigtlander, Vintage, Cinema
-- 75+ grading presets across Tone Curve, Log Wheels, 3-Way Color Balance, Hue/Sat/Lum curves, Color Warper
-- Physics-based: H&D characteristic curves, cos^4 vignette law, Brown-Conrady distortion model, PchipInterpolator tone curves
-- All processing in linear light (sRGB gamma removed before math, reapplied after)
-- Zero API costs — pure local computation
-- Dependencies: scipy, opensimplex only
+- Generate (5): Field Noise (Perlin, simplex, value, Worley F1, Worley F2-F1; fBm with 1 to 8 octaves), Field Gradient (six analytic ramps shaped by a stops-ramp editor), Field Shape, Field Tile, Field Scatter.
+- Shape and refine (5): remap, threshold, distance, morphology (octagonal kernel, 8.24% from a true disc against 41.4% for a square), warp.
+- Combine (2): Field Combine, and Field Composite, which varies any effect across the image through a field.
+- Derive (3): Field From Image, Field From Edges (Sobel, Scharr, Laplacian, hysteresis), Field From Detail.
 
-## Project: ComfyUI-Gemini-Direct
+The `coverage` control is made exact with a probability integral transform; noise ranges use measured constants rather than commonly quoted ones (for example, the simplex scale factor is 99.2043, not the common 70).
+
+### ComfyUI-Schematic
+
+Repository: https://github.com/jeremieLouvaert/ComfyUI-Schematic
+Nodes: 4. Version 0.8.0. Category: AKURATE/Schematic.
+
+Technical data-art nodes.
+- Schematic Overlay: detection circles (four scoring modes), tangent chains, crosshair frames, pixelation zones and corner labels over a photo. Four palettes. A clean-room reimplementation inspired by Yordan Stoyanov's Brand Assets Generator.
+- Schematic Construction: projective-geometry plates with two foci, ray pencils, concentric spheres, computed intersections and a label collision resolver.
+- Schematic Voronoi: the photo becomes the density field of a Voronoi tessellation (12,000 cells by default), driven by brightness, darkness or detail.
+- Schematic Topographic: seeded procedural terrain drawn as a map sheet, with contours, labelled index contours, hachures, spot heights, benchmarks, slope arrows, grid and marginalia.
+Voronoi and Topographic are deterministic per seed.
+
+## Generation on your own API key
+
+These packs call the provider's API directly with the user's own key instead of a credit system. Each shows the USD cost of a run and outputs a `cache_key` that ComfyUI-API-Optimizer's Hash Vault uses to skip repeat calls.
+
+### ComfyUI-Gemini-Direct
 
 Repository: https://github.com/jeremieLouvaert/ComfyUI-Gemini-Direct
-Language: Python
-License: Open Source
+Nodes: 6. Version 1.5.0.
 
-### Problem Statement
-Google Gemini’s native image generation is powerful but access through ComfyUI was limited to credit-based wrappers. Users needed a direct API integration that uses their own API key without intermediary billing.
+- Gemini Image Generate: Gemini 3 Pro Image (Nano Banana Pro), Nano Banana 2.1, Gemini 3.1 Flash Image (Nano Banana 2) and Gemini 2.5 Flash Image, at 512 px to 4K depending on the model. Per-image cost ranges from about $0.034 (Nano Banana 2.1 at 1K) to about $0.24 (Gemini 3 Pro at 4K).
+- Gemini Video Omni: 3 to 10 second 720p/24fps clips with audio, up to 14 reference images, conversational edits chained by `interaction_id`. About $0.10 per second of video.
+- Gemini Style Transfer and its settings node: 23 photographer styles applied to an input image.
+- Prompt Studio and its settings node: expand, refine or edit prompts, recommended on Gemini 3 Flash at about $0.001 a call.
 
-### Solution
-Two custom nodes:
-1. Gemini Image Generate — Direct API call to Gemini image generation. Supports Gemini 2.0 Flash, 2.5 Flash, and 2.5 Pro models. Resolution and aspect ratio control. USD cost display per generation. Cache key output for Hash Vault compatibility.
-2. Prompt Studio (AI Enhancer) — Domain-adaptive prompt expansion, refinement, and editing using Gemini text models. Anti-AI realism mandate built into system prompts.
-
-## Project: ComfyUI-Gemini-Conversation-Canvas
+### ComfyUI-Gemini-Conversation-Canvas
 
 Repository: https://github.com/jeremieLouvaert/ComfyUI-Gemini-Conversation-Canvas
-Language: Python
-License: MIT
+Nodes: 5. Version 1.1.0.
 
-### Problem Statement
-Traditional image generation APIs (DALL-E, Midjourney, Flux) are single-shot: send a prompt, get an image, no memory between generations. Google Gemini’s native image generation is different — it maintains conversation context, remembering what it generated and reasoning about modifications. However, no ComfyUI node suite properly exploited this multi-turn capability.
+Multi-turn image editing where each edit is a new turn in a Gemini conversation, so the model keeps the scene across edits. Nodes: Session Start, Edit Turn (chainable; aspect ratio can change between turns), Session Save, Session Load, Session Gallery. Sessions persist to disk as session.json plus one PNG per turn. Models: Gemini 3 Pro Image, Nano Banana 2.1, Gemini 3.1 Flash Image, Gemini 2.5 Flash Image.
 
-### Solution
-Five custom nodes that bring Gemini’s conversational image editing into ComfyUI:
+### ComfyUI-GPT-Image-Direct
 
-1. Gemini Session (Start)
-   - Creates a new conversation and generates the initial image
-   - Supports text-to-image and image-to-image editing
-   - Configurable model selection and aspect ratio
+Repository: https://github.com/jeremieLouvaert/ComfyUI-GPT-Image-Direct
+Nodes: 1 (GPT Image Generate). Version 1.2.1.
 
-2. Gemini Edit Turn
-   - Sends a natural language edit instruction to an existing conversation
-   - Full scene coherence maintained across turns
-   - Chainable — connect multiple in sequence for multi-step edits in one run
-   - Optional reference image input per turn
+OpenAI GPT Image through the Images API on the user's own key. Models: gpt-image-2.6-flare (default), gpt-image-2.6-sunburst, gpt-image-2.5-flare, gpt-image-2.5-sunburst, gpt-image-2, gpt-image-1.5, gpt-image-1-mini.
+- Text-to-image, or edits from up to 16 reference images with an optional inpaint mask.
+- Quality from low to max; sizes up to 3840x2160 or custom.
+- GPT Image 2.6 extras: animated GIF output (2 to 16 frames, returned as an image batch), SVG output, markup-guided edits from a transparent annotation PNG, and a complexity setting.
+- Exact USD cost per run from the API's token usage. Measured 1024x1024 prices on 2.6: low about $0.025, medium $0.043, high $0.053, max $0.21.
 
-3. Gemini Session (Save)
-   - Persists conversation history and turn images to disk
-   - API keys excluded from saved data for security
-   - Concurrent-safe with FileLock + atomic writes
-
-4. Gemini Session (Load)
-   - Restores saved sessions for cross-run continuation
-   - Rebuilds Gemini Chat object from serialized history with thought signature preservation
-
-5. Gemini Session Gallery
-   - Outputs all turn images as a batch tensor for visual comparison
-   - Includes turn log with response text summaries
-
-### Architecture
-Session state flows between nodes as a Python dict containing serialized Gemini Content objects (via Pydantic model_dump). Images saved as separate PNGs to keep session JSON lightweight. Chat objects rebuilt from history using google-genai SDK’s chats.create(history=...) pattern.
-
-### Key Technical Features
-- Thought signature preservation for Gemini 3.x model compatibility
-- History serialization/deserialization via Pydantic model_validate
-- Concurrent-safe file operations with FileLock + atomic writes (temp file + os.replace)
-- API key resolution: direct input > GEMINI_API_KEY env var > gemini_api_key.txt file
-- ComfyUI IMAGE tensor ↔ PIL Image ↔ bytes conversion utilities
-
-## Project: ComfyUI-Higgsfield-Direct
+### ComfyUI-Higgsfield-Direct
 
 Repository: https://github.com/jeremieLouvaert/ComfyUI-Higgsfield-Direct
-Language: Python
-License: Open Source
+Nodes: 4. Version 1.1.0.
 
-### Problem Statement
-Higgsfield.ai offers multiple image and video generation models (Soul 2.0, Seedream 4, Reve, Kling 2.1, Seedance, DOP) but had no ComfyUI integration.
+Higgsfield API: Text-to-Image (Soul 2.0, Seedream 4, Reve; 1K to 4K; Soul ID references), Image Edit (Seedream 4 Edit), Image-to-Video (Kling 2.1 Pro, Seedance Pro, DOP Preview; 5, 10 or 15 seconds, native ComfyUI VIDEO output), Model Info.
 
-### Solution
-Four custom nodes:
-1. Higgsfield Text-to-Image — Soul 2.0, Seedream 4, Reve models with resolution/aspect control and reference image support.
-2. Higgsfield Image Edit — Seedream 4 Edit for text-guided image editing.
-3. Higgsfield Image-to-Video — Kling 2.1 Pro, Seedance Pro, DOP Preview with 5/10/15s durations.
-4. Higgsfield Model Info — Utility node listing available models and their capabilities.
-Uses higgsfield-client SDK. API key via file/env/input.
+### ComfyUI-Midjourney-Direct
 
-## Project: ComfyUI-API-Optimizer
+Repository: https://github.com/jeremieLouvaert/ComfyUI-Midjourney-Direct
+Nodes: 1. Version 0.1.0.
+
+Midjourney has no official public API, so this node uses the LegNext.ai pool-based proxy. No Discord needed. Versions v7 (default), v6.1, v6 and niji 6; v8 and v8.1 with a LegNext Pro subscription. Stylize, weird, chaos, quality, image weight, negative, tile, draft and turbo are real inputs. Returns the 4-image grid as one image. About $0.08 per v8.1 fast image. v0.1 covers imagine only (no upscale, variation or zoom yet).
+
+## Workflow tools
+
+### ComfyUI-API-Optimizer
 
 Repository: https://github.com/jeremieLouvaert/ComfyUI-API-Optimizer
-Language: Python
-License: Open Source
+Nodes: 5. Version 1.4.2.
 
-### Problem Statement
-When ComfyUI workflows shift from local GPU inference to cloud APIs (Kling 3.0, Magnific, Banana.dev, RunPod), the bottlenecks change from VRAM to API costs, latency, and serialization. ComfyUI’s native caching often breaks with external API nodes due to dynamic timestamps and non-deterministic seeds.
+- API Cost & Quota Tracker: a persistent spending ledger computed with decimal arithmetic; it halts execution if the next run would exceed the budget.
+- Hash Vault (Check Cache, Lazy API Switch, Save Result): hashes the prompt, parameters and full tensor bytes (with dtype and shape). On a cache hit the Lazy API Switch uses ComfyUI's lazy evaluation so the API node never runs.
+- Hash Vault Label Builder, plus a browser gallery of cached results (Ctrl+Shift+H).
 
-### Solution
-Three custom node types that integrate natively into ComfyUI:
-
-1. API Cost & Quota Tracker
-   - Circuit-breaker pattern for API spending
-   - Persistent JSON ledger with per-provider cost tracking
-   - Append-only JSONL transaction audit log with timestamps
-   - Budget enforcement that halts execution before API charges
-   - Uses decimal.Decimal for precise arithmetic (no floating-point drift)
-   - Concurrent-safe with file locking
-
-2. Deterministic Hash Vault (3 nodes)
-   - Hash Vault Check: Hashes prompt text, parameters, and full tensor byte content
-   - Lazy API Switch: Uses ComfyUI’s lazy evaluation to physically prevent upstream API node execution on cache hits
-   - Hash Vault Save: Writes API outputs to disk cache with optional TTL
-   - Features: recursive hashing for nested structures, device-portable caching, atomic writes
-
-## Project: ComfyUI-Prompt-Vault
+### ComfyUI-Prompt-Vault
 
 Repository: https://github.com/jeremieLouvaert/ComfyUI-Prompt-Vault
-Language: Python
-License: Open Source
+Nodes: 3. Version 1.0.0.
 
-### Problem Statement
-AI image generation prompts for photorealism require specific camera, lighting, film stock, and composition terminology that most users don’t know. Generic prompt libraries are full of anime, influencer, and low-quality templates.
+Photographic prompts only. Browse: 21 curated templates in 8 categories. Build: 101 components (27 camera and lens setups, 24 lighting setups, 18 film stocks, 15 moods, 10 compositions, 7 quality directives). Favourites persist between sessions. No dependencies.
 
-### Solution
-Three custom nodes:
-1. Prompt Vault Browse — 21 curated elite templates across 8 categories, filtered from 12,000+ raw prompts. Editable before output.
-2. Prompt Vault Build — Assemble prompts from 100+ components: 27 cameras, 24 lighting setups, 18 film stocks, 15 moods, 7 quality directives, 10 compositions.
-3. Prompt Vault Favorites — Persistent prompt library across sessions using JSON storage.
-Zero dependencies. Curated exclusively for photorealism.
+### comfyui-prompt-assembler
 
-## Project: comfyui-wireless-link-simple
+Repository: https://github.com/jeremieLouvaert/comfyui-prompt-assembler
+Nodes: 3. Version 1.1.0.
+
+Prompt Assembler (8 slots), Compact (4 slots) and Weighted (6 slots). Each slot has an on/off toggle and a choice of separator. The weighted version applies (text:weight) attention syntax for weights other than 1.0 and also outputs the raw prompt.
+
+### comfyui-wireless-link-simple
 
 Repository: https://github.com/jeremieLouvaert/comfyui-wireless-link-simple
-Language: Python
-License: Free to use and modify
+Nodes: 2. Version 1.0.0.
 
-### Purpose
-Minimal wireless data link implementation for ComfyUI, inspired by Blackmagic Fusion’s wireless links. Two nodes (Send/Get) with named channels and universal type support.
+Wireless Send and Wireless Get pass any data type (IMAGE, MODEL, LATENT, VAE, CLIP, CONDITIONING, strings, numbers) on a named channel without a visible wire. Inspired by Blackmagic Fusion's wireless link. Data lives in memory for the session.
 
-## Company: AKURATE.STUDIO
+### ComfyUI-ReferenceCopy
 
-Website: https://jeremielouvaert.com
-Description: Premium brand intelligence platform combining AI-driven analysis with creative production tools.
+Repository: https://github.com/jeremieLouvaert/ComfyUI-ReferenceCopy
+Frontend extension, no nodes. Version 0.1.0.
 
-## Technical Expertise
+Houdini-style reference copies. Ctrl+Alt+C (or the right-click menu) clones a node and keeps every parameter live-linked to the original. Editing a parameter on the copy unlinks that parameter only. Links are one-way, stored in the workflow, and survive save, reload and undo.
 
-- ComfyUI custom node development (Python)
-- Professional color grading and film emulation (physics-based)
-- Google Gemini API integration (multi-turn, image generation)
-- PyTorch tensor operations and caching
-- API integration and cost optimization patterns
-- Stable Diffusion / SDXL / Flux workflow design
-- Production AI pipeline architecture
-- TypeScript / Node.js
-- REST API design
+### ComfyUI-EphemeralPeek
+
+Repository: https://github.com/jeremieLouvaert/ComfyUI-EphemeralPeek
+Frontend extension, no nodes. Version 0.1.0.
+
+Alt+click any output socket for a floating preview of that output. It injects one temporary preview node and runs a partial execution scoped to it; the saved workflow, undo history and canvas are never touched. Images render inline, masks through the core mask preview, other types as text.
+
+## About AKURATE.STUDIO
+
+AKURATE.STUDIO (https://jeremielouvaert.com) is the umbrella name under which Jeremie Louvaert develops his creative tools, including all the ComfyUI packs above.
 
 ## Contact
 
-- GitHub: https://github.com/jeremieLouvaert
 - Website: https://jeremielouvaert.com
+- GitHub: https://github.com/jeremieLouvaert
 - Email: jeremie.louvaert@gmail.com
